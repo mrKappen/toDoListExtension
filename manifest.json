@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "Tab Blocker",
+  "version": "0.1",
+  "browser_action": 
+	  {
+	  "default_icon": {
+	  	"16":"icon.png",
+	  	"24":"icon.png",
+	  	"32":"icon.png"
+	  	},
+	  	"default_popup":"popup.html"
+      },
+  "content_security_policy": "script-src 'self' 'sha256-WOdSzz11/3cpqOdrm89LBL2UPwEU9EhbDtMy2OciEhs='",
+  "background": 
+    {
+  	"scripts": ["background.js", "jQuery.js"]
+	  },
+    "permissions":["tabs","storage"]
+}
