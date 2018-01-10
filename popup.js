@@ -45,7 +45,7 @@ function removeAndSave(){
             	ul.removeChild(remove);
             	removeFromArray(urlList,text);
             	saveUrlList(); 	
-            },200);
+            },500);
          });
     });
 }
