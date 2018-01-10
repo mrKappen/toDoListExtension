@@ -1,15 +1,18 @@
 // global variables
 var urlList=[];
-var btn = document.getElementsByClassName("btn");
+//var btn = document.getElementsByClassName("btn");
 var input = document.getElementById('url');
-var btnText = btn[0].textContent;
-var btnId = btn[0].id;
-var inputState = input.disabled;
+var list = document.getElementById("list")
+//var btnText = btn[0].textContent;
+//var btnId = btn[0].id;
+//var inputState = input.disabled;
+/*
 var settings = {
 	btnText:btnText,
 	btnId:btnId,
 	inputState:inputState
 };
+*/
 document.addEventListener('DOMContentLoaded', function() {
     getUrlListAndRestoreInDom();
     // event listener for pressing enter
@@ -18,38 +21,31 @@ document.addEventListener('DOMContentLoaded', function() {
 		if(event.keyCode == 13){
 			workTab = input.value;
 				if (workTab.length>0 && urlList.indexOf(workTab) === -1){
-					workTab = specialCharacters(workTab);
+					//workTab = specialCharacters(workTab);
             		addUrlToDom(workTab);
             		addUrlToListAndSave(workTab);
             		removeAndSave();
+				}else{
+					alert("That's Already on the List!")
 				}	
 				input.value ="";
 			}	
 		});
 		removeAndSave();
-
-		btn[0].addEventListener("click",function(event){
-			if(btn[0].textContent =="START"){
-				btn[0].textContent ="STOP";
-				btn[0].id = "start-clicked";
-				input.disabled = true;
-			}else if(btn[0].textContent=="STOP"){
-				btn[0].textContent = "START";
-				btn[0].id = "start-new";
-				input.disabled = false;
-			}
-		});
 });
 
 function removeAndSave(){
 	document.querySelectorAll('li').forEach(function(el){
         el.addEventListener('click',function(){
-            var removeUrl = this.id;
-            var ul = document.querySelector('ul');
+        	var removeUrl = this.id;
+        	var ul = document.querySelector('ul');
             var remove = document.querySelector('#'+removeUrl);
-            ul.removeChild(remove);
-            removeFromArray(urlList,removeUrl);
-            saveUrlList();
+            var text = document.getElementById(removeUrl).innerHTML;
+            setTimeout(function(){
+            	ul.removeChild(remove);
+            	removeFromArray(urlList,text);
+            	saveUrlList(); 	
+            },200);
          });
     });
 }
@@ -66,9 +62,10 @@ function getUrlListAndRestoreInDom(){
 
 function addUrlToDom(url){
     var newLine = document.createElement('li');
+    var listLen = (list.childNodes.length -1).toString();
     document.getElementById("list").appendChild(newLine);
-    newLine.setAttribute("id", url);
-	url = switchBack(url);
+    newLine.setAttribute("id", "listID" + listLen);
+	//url = switchBack(url);
 	newLine.textContent = url;
 }
 
@@ -97,11 +94,12 @@ function removeFromArray(arr, what) {
         found = arr.indexOf(what);
     }
 }
+/*
 String.prototype.replaceAll = function(str1, str2, ignore) 
 {
     return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g,"\\$&"),(ignore?"gi":"g")),(typeof(str2)=="string")?str2.replace(/\$/g,"$$$$"):str2);
 } 
-
+/*
 function specialCharacters(workTab){
 	 workTab = workTab.replaceAll(".","_0_");
 				workTab = workTab.replaceAll("?","1-_0");
@@ -164,4 +162,4 @@ function switchBack(workTab){
 			return workTab;
 	
 }
-
+*/

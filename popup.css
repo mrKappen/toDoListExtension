@@ -2,7 +2,6 @@ body{
 	min-width: 300px; 
 	margin: 0px auto;
 	background-color: rgb(229, 252, 255);
-	font-family: roboto;
 }
 ul{
 	margin: 0px auto;
@@ -14,23 +13,26 @@ span{
 }
 li{
 	padding: 0.5em 1em;
+	font-family: Verdana;
+	opacity: 1;
+  	transition: opacity 1s;
+  	transition: visibility 1s;
 }
 #url{
 	width: 100%;
 }
 li:hover{
-	color:red;
+	color:	rgb(0, 153, 51);
+	text-decoration: line-through;
+}
+li:active{ /*fade out effect*/
+  	opacity: 0;
+  	visibility: hidden;
 } 
 #container{
 	min-height: 50px;
 }
-#start-new:hover{
-	color:green;
-}
 
-#start-clicked:hover{
-	color:red;
-}
 #box{
 	display: inline-flex;
 	margin-bottom: 0px;

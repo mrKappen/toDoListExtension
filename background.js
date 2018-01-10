@@ -7,12 +7,12 @@ chrome.runtime.onMessage.addListener(
         });
         }
       );
-
+/*
 function getCorrectUrl(tab){
-  tab = tab.replace(" ","");
-  tab = tab.replace("https","");
-  tab = tab.replace("http","");
-  tab = "https:" + tab;
+  //tab = tab.replace(" ","");
+  //tab = tab.replace("https","");
+  //tab = tab.replace("http","");
+  //tab = "https:" + tab;
   var patt = new RegExp(/[a-z]+\.[a-z]+/igm);
   var isTab = patt.test(tab);
 
@@ -24,3 +24,4 @@ function getCorrectUrl(tab){
   }
   return finTab; // puts inputted urls into the correct format
 }
+*/
