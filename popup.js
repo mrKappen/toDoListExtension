@@ -2,7 +2,7 @@
 var urlList=[];
 //var btn = document.getElementsByClassName("btn");
 var input = document.getElementById('url');
-var list = document.getElementById("list")
+var list = document.getElementById("list");
 //var btnText = btn[0].textContent;
 //var btnId = btn[0].id;
 //var inputState = input.disabled;
@@ -16,7 +16,6 @@ var settings = {
 document.addEventListener('DOMContentLoaded', function() {
     getUrlListAndRestoreInDom();
     // event listener for pressing enter
-    
     input.addEventListener("keyup", function(event){
 		if(event.keyCode == 13){
 			workTab = input.value;
@@ -25,12 +24,14 @@ document.addEventListener('DOMContentLoaded', function() {
             		addUrlToDom(workTab);
             		addUrlToListAndSave(workTab);
             		removeAndSave();
+            		chrome.browserAction.setBadgeText({text: (list.childNodes.length-1).toString()});
 				}else{
-					alert("That's Already on the List!")
+					alert("that's already on the list!")
 				}	
 				input.value ="";
 			}	
 		});
+ 		
 		removeAndSave();
 });
 
@@ -53,6 +54,7 @@ function removeAndSave(){
 function getUrlListAndRestoreInDom(){
     chrome.storage.local.get({urlList:[]},function(data){
         urlList = data.urlList;
+        chrome.browserAction.setBadgeText({text: (urlList.length).toString()});
         urlList.forEach(function(url){
             addUrlToDom(url);
         });
@@ -65,8 +67,9 @@ function addUrlToDom(url){
     var listLen = (list.childNodes.length -1).toString();
     document.getElementById("list").appendChild(newLine);
     newLine.setAttribute("id", "listID" + listLen);
-	//url = switchBack(url);
+    sendTaskNumber(listLen);
 	newLine.textContent = url;
+	
 }
 
 function addUrlToListAndSave(url){
@@ -93,73 +96,12 @@ function removeFromArray(arr, what) {
         arr.splice(found, 1);
         found = arr.indexOf(what);
     }
-}
-/*
-String.prototype.replaceAll = function(str1, str2, ignore) 
-{
-    return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g,"\\$&"),(ignore?"gi":"g")),(typeof(str2)=="string")?str2.replace(/\$/g,"$$$$"):str2);
-} 
-/*
-function specialCharacters(workTab){
-	 workTab = workTab.replaceAll(".","_0_");
-				workTab = workTab.replaceAll("?","1-_0");
-				workTab = workTab.replaceAll(">","2-_0");
-				workTab = workTab.replaceAll("<","3-_0");
-				workTab = workTab.replaceAll(",","4-_0");
-				workTab = workTab.replaceAll(",","5-_0");
-				workTab = workTab.replaceAll("!","6-_0");
-				workTab = workTab.replaceAll("@","7-_0");
-				workTab = workTab.replaceAll("#","8-_0");
-				workTab = workTab.replaceAll("$","9-_0");
-				workTab = workTab.replaceAll("%","10_0");
-				workTab = workTab.replaceAll("&","11_0");
-				workTab = workTab.replaceAll("*","12_0");
-				workTab = workTab.replaceAll("(","13_0");
-				workTab = workTab.replaceAll(")","14_0");
-				workTab = workTab.replaceAll("(","15_0");
-				workTab = workTab.replaceAll("+","16_0");
-				workTab = workTab.replaceAll("=","17_0");
-				workTab = workTab.replaceAll("\"","18_0");
-				workTab = workTab.replaceAll("\'","19_0");
-				workTab = workTab.replaceAll("/","20_0");
-				workTab = workTab.replaceAll("{","22_0");
-				workTab = workTab.replaceAll("}","23_0");
-				workTab = workTab.replaceAll("[","24_0");
-				workTab = workTab.replaceAll("]","25_0");
-				workTab = workTab.replaceAll(";","26_0");
-				workTab = workTab.replaceAll(":","27_0");
-			return workTab;
+    chrome.browserAction.setBadgeText({text: (arr.length).toString()});
 }
 
-function switchBack(workTab){
-				workTab = workTab.replaceAll("_0_",".");
-				workTab = workTab.replaceAll("1-_0","?");
-				workTab = workTab.replaceAll("2-_0",">");
-				workTab = workTab.replaceAll("3-_0","<");
-				workTab = workTab.replaceAll("4-_0",",");
-				workTab = workTab.replaceAll("5-_0",",");
-				workTab = workTab.replaceAll("6-_0","!");
-				workTab = workTab.replaceAll("7-_0","@");
-				workTab = workTab.replaceAll("8-_0","#");
-				workTab = workTab.replaceAll("9-_0","$");
-				workTab = workTab.replaceAll("10_0","%");
-				workTab = workTab.replaceAll("11_0","&");
-				workTab = workTab.replaceAll("12_0","*");
-				workTab = workTab.replaceAll("13_0","(");
-				workTab = workTab.replaceAll("14_0",")");
-				workTab = workTab.replaceAll("15_0","(");
-				workTab = workTab.replaceAll("16_0","+");
-				workTab = workTab.replaceAll("17_0","=");
-				workTab = workTab.replaceAll("18_0","\"");
-				workTab = workTab.replaceAll("19_0","\'");
-				workTab = workTab.replaceAll("20_0","/");
-				workTab = workTab.replaceAll("22_0","{");
-				workTab = workTab.replaceAll("23_0","}");
-				workTab = workTab.replaceAll("24_0","[");
-				workTab = workTab.replaceAll("25_0","]");
-				workTab = workTab.replaceAll("26_0",";");
-				workTab = workTab.replaceAll("27_0",":");
-			return workTab;
-	
+function sendTaskNumber(listLen){
+	chrome.runtime.sendMessage({listLen: listLen},
+        function (response) {
+            console.log("success!")
+        });
 }
-*/

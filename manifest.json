@@ -14,7 +14,8 @@
   "content_security_policy": "script-src 'self' 'sha256-WOdSzz11/3cpqOdrm89LBL2UPwEU9EhbDtMy2OciEhs='",
   "background": 
     {
-  	"scripts": ["background.js", "jQuery.js"]
+  	"scripts": ["background.js", "jQuery.js"]//,
+    //"persistent": false
 	  },
     "permissions":["tabs","storage"]
 }
